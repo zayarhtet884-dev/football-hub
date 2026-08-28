@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="my">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Football Hub - သတင်းနှင့် လိုက်ဗ်ရလဒ်များ</title>
-  <!-- Google Fonts for Modern Styling -->
-  <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Football Hub - Live Scores & News</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-color: #0b0f19;
@@ -27,7 +27,7 @@
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
-      font-family: 'Poppins', 'Padauk', sans-serif;
+      font-family: 'Poppins', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -123,7 +123,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Advanced News Card Design */
+    /* News Card Design */
     .news-card {
       background: var(--card-bg);
       border-radius: 16px;
@@ -196,7 +196,7 @@
       gap: 8px;
     }
 
-    /* Live Scores Widget Container */
+    /* Widget Container */
     .widget-card {
       background: var(--card-bg);
       border-radius: 16px;
@@ -233,11 +233,11 @@
       <span>⚽</span>
       <h1>FOOTBALL HUB</h1>
     </div>
-    <div class="live-date" id="current-date">ရက်စွဲ ရယူနေပါသည်...</div>
+    <div class="live-date" id="current-date">Loading date...</div>
     
     <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchTab('news', this)">သတင်းများ</button>
-      <button class="tab-btn" onclick="switchTab('matches', this)">ပွဲစဉ်နှင့် လိုက်ဗ်ရလဒ်</button>
+      <button class="tab-btn active" onclick="switchTab('news', this)">News</button>
+      <button class="tab-btn" onclick="switchTab('matches', this)">Matches & Live Scores</button>
     </div>
   </header>
 
@@ -245,7 +245,7 @@
     <!-- Football News Section -->
     <div id="news-section" class="section active">
       <div id="news-container">
-        <div class="loading">နောက်ဆုံးရ သတင်းများ ရယူနေပါသည်...</div>
+        <div class="loading">Loading football news...</div>
       </div>
     </div>
 
@@ -259,15 +259,15 @@
   </main>
 
   <footer>
-    <p>Created by <b>ဇေယျာထက်</b> | Automated Football Engine</p>
+    <p>Created by <b>Zayar Htet</b> | Automated Football Engine</p>
   </footer>
 
   <script>
-    // Live Date Display
+    // Live Date Display in English
     function updateDate() {
       const now = new Date();
-      const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
-      document.getElementById('current-date').innerText = now.toLocaleDateString('my-MM', options);
+      const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+      document.getElementById('current-date').innerText = now.toLocaleDateString('en-US', options);
     }
     updateDate();
 
@@ -280,10 +280,11 @@
       document.getElementById(tabName + '-section').classList.add('active');
     }
 
-    // Fetch News with Full Date Formatting
+    // Fetch Football News Only
     async function fetchNews() {
       const container = document.getElementById('news-container');
-      const rssUrl = encodeURIComponent('https://www.skysports.com/rss/12040');
+      // Dedicated Football RSS Feed (Goal.com / Football)
+      const rssUrl = encodeURIComponent('https://www.goal.com/feeds/en/news');
       const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
 
       try {
@@ -298,28 +299,27 @@
             
             const cleanSnippet = item.description.replace(/<[^>]*>?/gm, '').substring(0, 130) + '...';
             
-            // Format Article Published Date & Time
             const pubDate = new Date(item.pubDate);
             const formattedDate = pubDate.toLocaleDateString('en-US', {
               month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
             });
 
             card.innerHTML = `
-              <span class="news-badge">Latest News</span>
+              <span class="news-badge">Football News</span>
               <div class="news-title">${item.title}</div>
               <div class="news-snippet">${cleanSnippet}</div>
               <div class="news-footer">
                 <span class="news-date">📅 ${formattedDate}</span>
-                <a href="${item.link}" target="_blank" class="read-btn">ဖတ်ရှုရန် ➔</a>
+                <a href="${item.link}" target="_blank" class="read-btn">Read More ➔</a>
               </div>
             `;
             container.appendChild(card);
           });
         } else {
-          container.innerHTML = '<div class="loading">သတင်းများ ရယူ၍ မရနိုင်သေးပါ။ ခေတ္တစောင့်ပေးပါခင်ဗျာ။</div>';
+          container.innerHTML = '<div class="loading">Unable to fetch news right now. Please try again.</div>';
         }
       } catch (error) {
-        container.innerHTML = '<div class="loading">အင်တာနက် ချိတ်ဆက်မှုကို စစ်ဆေးပါခင်ဗျာ။</div>';
+        container.innerHTML = '<div class="loading">Please check your internet connection.</div>';
       }
     }
 
