@@ -3,30 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Football Hub - ဘောလုံးသတင်းနှင့် Live Scores</title>
+  <title>Football Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Auto Translate Script to Myanmar -->
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'my,en',
-        autoDisplay: false
-      }, 'google_translate_element');
-
-      // Auto trigger Myanmar Translation
-      setTimeout(function() {
-        var select = document.querySelector('.goog-te-combo');
-        if (select) {
-          select.value = 'my';
-          select.dispatchEvent(new Event('change'));
-        }
-      }, 1000);
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
   <style>
     :root {
       --bg-color: #0b0f19;
@@ -54,18 +32,14 @@
     .news-snippet { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
     .news-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 13px; }
     .read-btn { color: var(--accent-color); text-decoration: none; font-weight: 700; }
-    .widget-card { background: var(--card-bg); border-radius: 16px; padding: 12px; border: 1px solid var(--card-border); }
+    .widget-card { background: var(--card-bg); border-radius: 16px; padding: 8px; border: 1px solid var(--card-border); }
     .loading { text-align: center; color: var(--text-muted); padding: 40px 0; }
-    #google_translate_element { display: none; }
-    .goog-te-banner-frame { display: none !important; }
-    body { top: 0px !important; }
   </style>
 </head>
 <body>
   <header>
     <div class="brand"><h1>⚽ FOOTBALL HUB</h1></div>
-    <div class="live-date" id="current-date">ရက်စွဲ ရယူနေသည်...</div>
-    <div id="google_translate_element"></div>
+    <div class="live-date" id="current-date">Loading...</div>
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('news', this)">သတင်းများ</button>
       <button class="tab-btn" onclick="switchTab('matches', this)">ပွဲစဉ်နှင့် ရလဒ်များ</button>
@@ -77,14 +51,14 @@
     </div>
     <div id="matches-section" class="section">
       <div class="widget-card">
-        <iframe src="https://www.scoreaxis.com/widget/live-scores?autoHeight=1&bodyBackground=%23161f32&textColor=%23f8fafc" width="100%" height="580" style="border:none;" scrolling="no"></iframe>
+        <iframe src="https://www.scorebat.com/embed/livescore/" width="100%" height="600" style="border:none; overflow:hidden;" scrolling="no"></iframe>
       </div>
     </div>
   </main>
   <script>
     function updateDate() {
       const now = new Date();
-      document.getElementById('current-date').innerText = now.toLocaleDateString('my-MM', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+      document.getElementById('current-date').innerText = now.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
     }
     updateDate();
     function switchTab(tabName, btnElement) {
@@ -105,11 +79,11 @@
             const card = document.createElement('div');
             card.className = 'news-card';
             card.innerHTML = `
-              <span class="news-badge">နောက်ဆုံးရ သတင်း</span>
+              <span class="news-badge">LATEST NEWS</span>
               <div class="news-title">${item.title}</div>
               <div class="news-snippet">${item.description.replace(/<[^>]*>?/gm, '').substring(0, 120)}...</div>
               <div class="news-footer">
-                <span>📅 ${new Date(item.pubDate).toLocaleDateString('my-MM', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                <span>📅 ${new Date(item.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                 <a href="${item.link}" target="_blank" class="read-btn">ဖတ်ရှုရန် ➔</a>
               </div>
             `;
