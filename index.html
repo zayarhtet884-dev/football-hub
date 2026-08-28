@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Football Hub - Live Scores & News</title>
-  <!-- Google Fonts -->
+  <title>Football Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -15,314 +14,84 @@
       --accent-gradient: linear-gradient(135deg, #10b981, #059669);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --badge-bg: rgba(16, 185, 129, 0.15);
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      font-family: 'Poppins', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-bottom: 20px;
-    }
-
-    /* Modern Header */
-    header {
-      width: 100%;
-      background: rgba(22, 31, 50, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--card-border);
-      padding: 16px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .brand h1 {
-      font-size: 22px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #34d399, #10b981);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 0.5px;
-    }
-
-    .live-date {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 4px;
-      font-weight: 500;
-    }
-
-    /* Navigation Pill Tabs */
-    .nav-tabs {
-      display: inline-flex;
-      background: rgba(15, 23, 42, 0.6);
-      padding: 4px;
-      border-radius: 30px;
-      margin-top: 14px;
-      border: 1px solid var(--card-border);
-    }
-
-    .tab-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      padding: 8px 20px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 13px;
-      font-family: inherit;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .tab-btn.active {
-      background: var(--accent-gradient);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-
-    /* Container Area */
-    main {
-      width: 100%;
-      max-width: 650px;
-      padding: 20px 16px;
-    }
-
-    .section {
-      display: none;
-      animation: fadeIn 0.4s ease-in-out;
-    }
-
-    .section.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* News Card Design */
-    .news-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 16px;
-      border: 1px solid var(--card-border);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-
-    .news-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(16, 185, 129, 0.4);
-    }
-
-    .news-badge {
-      display: inline-block;
-      background: var(--badge-bg);
-      color: var(--accent-color);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 12px;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-
-    .news-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-main);
-      line-height: 1.4;
-      margin-bottom: 10px;
-    }
-
-    .news-snippet {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 14px;
-    }
-
-    .news-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 12px;
-    }
-
-    .news-date {
-      color: #64748b;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .read-btn {
-      color: var(--accent-color);
-      text-decoration: none;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      transition: gap 0.2s ease;
-    }
-
-    .read-btn:hover {
-      gap: 8px;
-    }
-
-    /* Widget Container */
-    .widget-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 12px;
-      border: 1px solid var(--card-border);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      overflow: hidden;
-    }
-
-    .loading {
-      text-align: center;
-      color: var(--text-muted);
-      padding: 40px 0;
-      font-size: 14px;
-    }
-
-    footer {
-      margin-top: auto;
-      text-align: center;
-      padding: 20px;
-      font-size: 12px;
-      color: #64748b;
-    }
-
-    footer b {
-      color: var(--accent-color);
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Poppins', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-bottom: 20px; }
+    header { width: 100%; background: rgba(22, 31, 50, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--card-border); padding: 16px 20px; position: sticky; top: 0; z-index: 100; text-align: center; }
+    .brand h1 { font-size: 22px; font-weight: 700; background: linear-gradient(135deg, #34d399, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .live-date { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .nav-tabs { display: inline-flex; background: rgba(15, 23, 42, 0.6); padding: 4px; border-radius: 30px; margin-top: 14px; border: 1px solid var(--card-border); }
+    .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 8px 20px; border-radius: 25px; cursor: pointer; font-size: 13px; font-weight: 600; }
+    .tab-btn.active { background: var(--accent-gradient); color: #ffffff; }
+    main { width: 100%; max-width: 650px; padding: 20px 16px; }
+    .section { display: none; }
+    .section.active { display: block; }
+    .news-card { background: var(--card-bg); border-radius: 16px; padding: 18px; margin-bottom: 16px; border: 1px solid var(--card-border); }
+    .news-badge { display: inline-block; background: rgba(16, 185, 129, 0.15); color: var(--accent-color); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; margin-bottom: 10px; }
+    .news-title { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; }
+    .news-snippet { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+    .news-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 12px; }
+    .read-btn { color: var(--accent-color); text-decoration: none; font-weight: 700; }
+    .widget-card { background: var(--card-bg); border-radius: 16px; padding: 12px; border: 1px solid var(--card-border); }
+    .loading { text-align: center; color: var(--text-muted); padding: 40px 0; }
   </style>
 </head>
 <body>
-
   <header>
-    <div class="brand">
-      <span>⚽</span>
-      <h1>FOOTBALL HUB</h1>
-    </div>
+    <div class="brand"><h1>⚽ FOOTBALL HUB</h1></div>
     <div class="live-date" id="current-date">Loading date...</div>
-    
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('news', this)">News</button>
-      <button class="tab-btn" onclick="switchTab('matches', this)">Matches & Live Scores</button>
+      <button class="tab-btn" onclick="switchTab('matches', this)">Matches and live results</button>
     </div>
   </header>
-
   <main>
-    <!-- Football News Section -->
     <div id="news-section" class="section active">
-      <div id="news-container">
-        <div class="loading">Loading football news...</div>
-      </div>
+      <div id="news-container"><div class="loading">Loading news...</div></div>
     </div>
-
-    <!-- Live Matches Section -->
     <div id="matches-section" class="section">
       <div class="widget-card">
-        <iframe src="https://www.scoreaxis.com/widget/live-scores?autoHeight=1&bodyBackground=%23161f32&textColor=%23f8fafc" 
-                width="100%" height="580" style="border:none;" scrolling="no"></iframe>
+        <iframe src="https://www.scoreaxis.com/widget/live-scores?autoHeight=1&bodyBackground=%23161f32&textColor=%23f8fafc" width="100%" height="580" style="border:none;" scrolling="no"></iframe>
       </div>
     </div>
   </main>
-
-  <footer>
-    <p>Created by <b>Zayar Htet</b> | Automated Football Engine</p>
-  </footer>
-
   <script>
-    // Live Date Display in English
     function updateDate() {
       const now = new Date();
-      const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-      document.getElementById('current-date').innerText = now.toLocaleDateString('en-US', options);
+      document.getElementById('current-date').innerText = now.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
     }
     updateDate();
-
-    // Tab Switcher
     function switchTab(tabName, btnElement) {
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-
       btnElement.classList.add('active');
       document.getElementById(tabName + '-section').classList.add('active');
     }
-
-    // Fetch Football News Only
     async function fetchNews() {
       const container = document.getElementById('news-container');
-      // Dedicated Football RSS Feed (Goal.com / Football)
-      const rssUrl = encodeURIComponent('https://www.goal.com/feeds/en/news');
-      const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
-
+      const rssUrl = encodeURIComponent('https://www.skysports.com/rss/12040');
       try {
-        const response = await fetch(apiUrl);
+        const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
         const data = await response.json();
-
         if (data.status === 'ok') {
           container.innerHTML = '';
-          data.items.slice(0, 12).forEach(item => {
+          data.items.slice(0, 10).forEach(item => {
             const card = document.createElement('div');
             card.className = 'news-card';
-            
-            const cleanSnippet = item.description.replace(/<[^>]*>?/gm, '').substring(0, 130) + '...';
-            
-            const pubDate = new Date(item.pubDate);
-            const formattedDate = pubDate.toLocaleDateString('en-US', {
-              month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
-            });
-
             card.innerHTML = `
-              <span class="news-badge">Football News</span>
+              <span class="news-badge">LATEST NEWS</span>
               <div class="news-title">${item.title}</div>
-              <div class="news-snippet">${cleanSnippet}</div>
+              <div class="news-snippet">${item.description.replace(/<[^>]*>?/gm, '').substring(0, 120)}...</div>
               <div class="news-footer">
-                <span class="news-date">📅 ${formattedDate}</span>
-                <a href="${item.link}" target="_blank" class="read-btn">Read More ➔</a>
+                <span>📅 ${new Date(item.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                <a href="${item.link}" target="_blank" class="read-btn">Read ➔</a>
               </div>
             `;
             container.appendChild(card);
           });
-        } else {
-          container.innerHTML = '<div class="loading">Unable to fetch news right now. Please try again.</div>';
         }
-      } catch (error) {
-        container.innerHTML = '<div class="loading">Please check your internet connection.</div>';
-      }
+      } catch (e) { container.innerHTML = 'Error loading news.'; }
     }
-
     fetchNews();
   </script>
 </body>
